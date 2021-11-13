@@ -4,8 +4,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 // const cors = require("cors");
-// const customersController = require("./controllers/CustomersController.js");
-// const productsController = require("./controllers/ProductsController.js");
+const customersController = require("./controllers/CustomersController.js");
+const productsController = require("./controllers/ProductsController.js");
 
 
 if (process.env.NODE_ENV != "production") {
@@ -39,8 +39,8 @@ app.get("/", (req, res) => {
     })
 });
 
-// app.use("/products", productsController);
-// app.use("/customers", customersController);
+app.use("/products", productsController);
+app.use("/customers", customersController);
 //for routes that doesnt exist
 
 
