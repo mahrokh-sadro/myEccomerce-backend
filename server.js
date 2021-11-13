@@ -29,7 +29,7 @@ const app = express();
 
 app.use(express.json());
 
-const HTTP_PORT = process.env.PORT || 5000;
+// const HTTP_PORT = process.env.PORT || 5000;
 
 //retirieve
 app.get("/", (req, res) => {
@@ -45,14 +45,14 @@ app.get("/", (req, res) => {
 
 
 
-app.use("*", (req, res) => {
-    res.status(404).json({
-        message: "not found"
-    })
-})
+// app.use("*", (req, res) => {
+//     res.status(404).json({
+//         message: "not found"
+//     })
+// })
 
 
-app.listen(HTTP_PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
 
     console.log(`app listening on ${HTTP_PORT}`);
 
