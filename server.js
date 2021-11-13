@@ -54,7 +54,7 @@ app.get("/", (req, res) => {
 
 app.listen(process.env.PORT || 5000, () => {
 
-    console.log(`app listening on ${HTTP_PORT}`);
+    console.log(`app listening on `);
 
     mongoose.connect(process.env.MONGO_DB_CONNECTION_STRING)
         .then(() => {
