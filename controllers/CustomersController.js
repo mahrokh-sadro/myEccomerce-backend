@@ -1,10 +1,10 @@
-const express = require('express');
-const router = express.Router();
+// const express = require('express');
+// const router = express.Router();
 
-const customerService = require("../services/CustomerService.js");
+// const customerService = require("../services/CustomerService.js");
 
 
-router.post("/", customerService.createACustomer);
-router.get("/:id", customerService.getACustomer);
+// router.post("/", customerService.createACustomer);
+// router.get("/:id", customerService.getACustomer);
 
-module.exports = router;
+// module.exports = router;
