@@ -5,7 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 // const cors = require("cors");
 // const customersController = require("./controllers/CustomersController.js");
-const productsController = require("./controllers/ProductsController.js");
+// const productsController = require("./controllers/ProductsController.js");
 
 
 if (process.env.NODE_ENV != "production") {
