@@ -8,9 +8,9 @@ const mongoose = require('mongoose');
 // const productsController = require("./controllers/ProductsController.js");
 
 
-// if (process.env.NODE_ENV != "production") {
-//     require('dotenv').config({ path: 'config/keys.env' });
-// }
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config({ path: 'config/keys.env' });
+}
 const app = express();
 
 // var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000']
