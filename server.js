@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
     })
 });
 
-app.use("/products", productsController);
+// app.use("/products", productsController);
 // app.use("/customers", customersController);
 //for routes that doesnt exist
 
