@@ -13,34 +13,30 @@ if (process.env.NODE_ENV != "production") {
 }
 const app = express();
 
-
-const whitelist = ["https://61907538ac6c773eabc14db4--dazzling-bohr-642fda.netlify.app"]
-
-const corsOptions = {
-
-    origin: function (origin, callback) {
-
-        if (!origin || whitelist.indexOf(origin) !== -1) {
-
-            callback(null, true)
-
-        } else {
-
-            callback(new Error("Not allowed by CORS"))
-
-        }
-
-    },
-
-    credentials: true,
-
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
+    next();
+});
+const corsOptionsDelegate = function (req, callback) {
+    const allowlist = [`http://localhost:3000`, 'http://127.0.0.1:3000', 'https://61907538ac6c773eabc14db4--dazzling-bohr-642fda.netlify.app']
+    let corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+    } else {
+        corsOptions = { origin: false } // disable CORS for this request
+    }
+    callback(null, corsOptions) // callback expects two parameters: error and options
 }
 
-app.use(cors(corsOptions))
+//middleware
+app.use(cors(corsOptionsDelegate))
 
 
 
-app.use(express.json());
+// app.use(express.json());
 
 //retirieve
 app.get("/", (req, res) => {
