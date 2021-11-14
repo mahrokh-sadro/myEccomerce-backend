@@ -13,13 +13,6 @@ if (process.env.NODE_ENV != "production") {
 }
 const app = express();
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", '*');
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-    next();
-});
 const corsOptionsDelegate = function (req, callback) {
     const allowlist = [`http://localhost:3000`, 'http://127.0.0.1:3000', 'https://61907538ac6c773eabc14db4--dazzling-bohr-642fda.netlify.app']
     let corsOptions;
