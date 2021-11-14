@@ -3,7 +3,7 @@
 //import express
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require("cors");
+// const cors = require("cors");
 const customersController = require("./controllers/CustomersController.js");
 const productsController = require("./controllers/ProductsController.js");
 
@@ -13,10 +13,11 @@ if (process.env.NODE_ENV != "production") {
 }
 const app = express();
 
-var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://dazzling-bohr-642fda.netlify.app']
-var corsOptionsDelegate = function (req, callback) {
-    var corsOptions;
-    if (whitelist.indexOf(req.header('Origin')) !== -1) {
+
+const corsOptionsDelegate = function (req, callback) {
+    const allowlist = [`http://localhost:3000`, 'http://127.0.0.1:3000', 'https://61907538ac6c773eabc14db4--dazzling-bohr-642fda.netlify.app']
+    let corsOptions;
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
         corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
     } else {
         corsOptions = { origin: false } // disable CORS for this request
@@ -24,7 +25,9 @@ var corsOptionsDelegate = function (req, callback) {
     callback(null, corsOptions) // callback expects two parameters: error and options
 }
 
-app.use(cors(corsOptionsDelegate));
+//middleware
+app.use(cors(corsOptionsDelegate))
+
 
 
 app.use(express.json());
