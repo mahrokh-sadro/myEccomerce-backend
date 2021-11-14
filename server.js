@@ -13,7 +13,7 @@ if (process.env.NODE_ENV != "production") {
 }
 const app = express();
 
-var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://dazzling-bohr-642fda.netlify.app/']
+var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://dazzling-bohr-642fda.netlify.app']
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
     if (whitelist.indexOf(req.header('Origin')) !== -1) {
