@@ -36,7 +36,6 @@
     "content-type": "^1.0.4",
     "cookie": "^0.4.0",
     "cookie-signature": "^1.0.6",
-  
     "crypto-random-string": "^2.0.0",
     "debug": "^2.6.9",
     "decompress-response": "^3.3.0",
@@ -60,6 +59,7 @@
     "finalhandler": "^1.1.2",
     "forwarded": "^0.2.0",
     "fresh": "^0.5.2",
+    "fsevents": "^2.3.2",
     "get-stream": "^4.1.0",
     "glob-parent": "^5.1.2",
     "global-dirs": "^3.0.0",
