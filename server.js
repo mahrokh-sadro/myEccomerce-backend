@@ -13,7 +13,7 @@ if (process.env.NODE_ENV != "production") {
 }
 const app = express();
 
-var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000']
+var whitelist = ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://dazzling-bohr-642fda.netlify.app/']
 var corsOptionsDelegate = function (req, callback) {
     var corsOptions;
     if (whitelist.indexOf(req.header('Origin')) !== -1) {
@@ -29,8 +29,6 @@ app.use(cors(corsOptionsDelegate));
 
 app.use(express.json());
 
-// const HTTP_PORT = process.env.PORT || 5000;
-
 //retirieve
 app.get("/", (req, res) => {
 
@@ -45,11 +43,11 @@ app.use("/customers", customersController);
 
 
 
-// app.use("*", (req, res) => {
-//     res.status(404).json({
-//         message: "not found"
-//     })
-// })
+app.use("*", (req, res) => {
+    res.status(404).json({
+        message: "not found"
+    })
+})
 
 
 app.listen(process.env.PORT || 5000, () => {
