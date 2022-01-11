@@ -28,11 +28,15 @@ const customerSchema = new Schema({
     required: true,
   },
 
-  phoneNumber: {
-    type: Array,
-    required: true,
-  },
+  // phoneNumber: {
+  //   type: Array,
+  //   required: true,
+  // },
 
+  role: {
+    type: Number,
+    default: 0,
+  },
   dateCreated: {
     type: Date,
     default: Date.now(),

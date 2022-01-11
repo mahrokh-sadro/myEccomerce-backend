@@ -1,168 +1,83 @@
-
 const customerModel = require("../models/CustomerModel.js");
-const bcrypt = require('bcrypt');
-const JWT = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
 
-
-
-const { body, validationResult } = require('express-validator');
-
-
-// var JWT_SECRET="kkklkjnmdd";
-
-
-if (process.env.NODE_ENV != "production") {
-    require('dotenv').config({ path: 'config/keys.env' });
-}
-
-
-
-
-
-
-
-
-
-
-exports.createACustomer = (req, res) => {
-
-    if (!req.body.firstName || !req.body.lastName
-        || !req.body.email || !req.body.password) {
-        res.status(400).json({
-            message: `bad request`
-            ///addd more info 
-            //first      one is missing more info
-        })
-    }
-    const newCustomer = new customerModel(req.body);
-
-    newCustomer.save()
-        .then(customer => {
-            res.json({
-                message: 'new customer got created',
-                data: customer
-
-            })
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: `Error ${err}`
-            })
-        })
-}
-
-
-
-
-
-// exports.createACustomer = (req, res) => {
-
-//     const validationErrors = validationResult(req);
-//     const { firstName, lastName, email, password } = req.body;
-
-
-
-//     if (!firstName || !lastName
-//         || !email || !password) {
-//         res.status(400).json({
-//             message: `bad request`
-//             ///addd more info 
-//             //first      one is missing more info
-//         })
-//     }
-
-//     const user = customerModel.findOne({email})
-//     .then(user=>{
-//         if(user)
+// exports.getACustomer = (req, res) => {
+//   customerModel
+//     .findById(req.params.id)
+//     .then((customer) => {
+//       if (customer) {
 //         res.json({
-//             message: `email already exists.`
-//             ,data:null
-//         })
+//           message: `customer with the id ${req.params.id}`,
+//           data: customer,
+//         });
+//       } else {
+//         res.status(404).json({
+//           message: `There is no customer with the id ${req.params.id}`,
+//         });
+//       }
 //     })
-//     .catch(err=>{
-//         res.status(500).json({
-//             message: `Error------->${err}`
-//         })
+
+//     .catch((err) => {
+//       res.status(500).json({
+//         message: `There is no customer with the id ${req.params.id}`,
+//       });
 //     });
+// };
 
+exports.userById = (req, res, next, id) => {
+  customerModel.findById(id).exec((err, user) => {
+    if (err || !user) {
+      res.status(400).json({
+        err: `user not found`,
+      });
+    }
+    req.profile = user;
+    next();
+  });
+};
 
-//     const newCustomer = new customerModel({
+exports.read = (req, res) => {
+  req.profile.password = undefined;
+  res.json(req.profile);
+};
 
-//         firstName,
-//         lastName,
-//         email,
-//         password
+exports.update = (req, res) => {
+  const { firstName, lastName, password } = req.body;
 
+  customerModel.findOne({ _id: req.profile._id }, (err, user) => {
+    if (err || !user) {
+      res.status(400).json({
+        error: "User not found",
+      });
+    }
 
-//     });
+    if (!firstName || !lastName) {
+      res.status(400).json({
+        error: "first name and last name are required",
+      });
+    } else {
+      user.firstName = firstName;
+      user.lastName = lastName;
+    }
 
+    if (password) {
+      if (password.length < 6) {
+        return res.status(400).json({
+          error: "Password should be min 6 characters long",
+        });
+      } else {
+        user.password = password;
+      }
 
-
-//     newCustomer.save()
-//         .then(customer => {
-//             res.json({
-//                 message: 'new customer got created',
-//                 data: customer
-
-//             })
-//         })
-//         .catch(err => {
-//             res.status(500).json({
-//                 message: `Error ${err}`
-//             })
-//         })
-
-//         const token = JWT.sign(
-//             { email: newCustomer.email },
-//             process.env.JWT_SECRET,
-//             {
-//               expiresIn: 360000,
-//             }
-//           );
-
-// res.json({
-//     errors: [],
-//     data: {
-//       token,
-//       user: {
-//         id: newCustomer._id,
-//         email: newCustomer.email,
-      
-//     },
-// },
-// });
-// }
-
-
-
-
-
-exports.getACustomer = (req, res) => {
-
-    customerModel.findById(req.params.id)
-        .then(customer => {
-            if (customer) {
-                res.json({
-                    message: `customer with the id ${req.params.id}`,
-                    data: customer
-                })
-            }
-            else {
-
-                res.status(404).json({
-                    message: `There is no customer with the id ${req.params.id}`
-                })
-            }
-        })
-
-        .catch(err => {
-            res.status(500).json({
-                message: `There is no customer with the id ${req.params.id}`
-            })
-        })
-
-}
-
-
-
-
+      user.save((err, updatedUser) => {
+        if (err) {
+          res.status(400).json({
+            error: "User update failed",
+          });
+        }
+        updatedUser.password = undefined;
+        res.json(updatedUser);
+      });
+    }
+  });
+};

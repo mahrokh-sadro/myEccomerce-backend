@@ -1,88 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const {
+  requireSignin,
+  isAuth,
+  isAdmin,
+} = require("../services/AuthService.js");
 
-const customerService = require("../services/CustomerService.js");
+const {
+  //   userById,
+  read,
+  //   update,
+  //   purchaseHistory,
+} = require("../services/CustomerService.js");
 
-
-const customerModel = require("../models/CustomerModel.js");
-const bcrypt = require('bcrypt');
-
-const JWT = require('jsonwebtoken');
-
-
-
-const { body, validationResult } = require('express-validator');
-
-
- var JWT_SECRET="kkklkjnmdd";
-
-
-
- router.post("/", customerService.createACustomer);
-//  router.post("/login", customerService.signInACustomer);
-
-
-
- router.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-  
-    const user = await customerModel.findOne({ email });
-  
-    if (!user) {
-      return res.json({
-        errors: [
-          {
-            msg: "Invalids credentials",
-          },
-        ],
-        data: null,
-      });
-    }
-  
-    const isMatch = await bcrypt.compare(password, user.password);
-  
-    if (!isMatch) {
-      return res.json({
-        errors: [
-          {
-            msg: "Invalids credentials",
-          },
-        ],
-        data: null,
-      });
-    }
-  
-    const token = await JWT.sign(
-      { email: user.email },
-      JWT_SECRET ,
-      {
-        expiresIn: 360000,
-      }
-    );
-  
-    return res.json({
-      errors: [],
-      data: {
-        token,
-        user: {
-          id: user._id,
-          email: user.email,
-        },
-      },
-    });
+router.get("/secret/:id", requireSignin, isAuth, isAdmin, (req, res) => {
+  res.json({
+    user: req.profile,
   });
+});
 
+router.get("/customers/:userId", requireSignin, isAuth, read);
+// router.put("/customers/:userId", requireSignin, isAuth, update);
+// router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
 
-
-
-
-
-
-
-
-
-
-
-router.get("/:id", customerService.getACustomer);
+// router.param("userId", userById);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const morgan = require("morgan");
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+// const expressValidator = require("express-validator");
 
 const customersController = require("./controllers/CustomersController.js");
 const productsController = require("./controllers/ProductsController.js");
@@ -36,9 +37,9 @@ const corsOptionsDelegate = function (req, callback) {
 app.use(morgan("dev"));
 app.use(cors(corsOptionsDelegate));
 app.use(bodyParser.json());
-
-// app.use(express.json());
+app.use(express.json());
 app.use(cookieParser());
+// app.use(expressValidator());
 
 //retirieve
 app.get("/", (req, res) => {
@@ -49,7 +50,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", AuthController);
 app.use("/products", productsController);
-app.use("/customers", customersController);
+app.use("/", customersController);
 // app.use("/customers", superMahrokhController);
 // app.use("/customers", orderController);
 
