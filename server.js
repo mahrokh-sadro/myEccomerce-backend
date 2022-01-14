@@ -36,7 +36,7 @@ const corsOptionsDelegate = function (req, callback) {
 //middleware
 app.use(morgan("dev"));
 app.use(cors(corsOptionsDelegate));
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 // app.use(expressValidator());
@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", AuthController);
 app.use("/products", productsController);
-app.use("/", customersController);
+// app.use("/", customersController);
 // app.use("/customers", superMahrokhController);
 // app.use("/customers", orderController);
 
@@ -58,7 +58,7 @@ app.use("/", customersController);
 
 app.use("*", (req, res) => {
   res.status(404).json({
-    message: "not found",
+    message: "page not found",
   });
 });
 

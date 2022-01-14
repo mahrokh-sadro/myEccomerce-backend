@@ -1,9 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-//imp 
+//imp
 const productService = require("../services/ProductService.js");
 
+router.get("/related/:id", productService.getRelatedProducts);
 router.get("/", productService.getAllProducts);
 router.get("/categories", productService.getAllCategories);
 router.get("/:id", productService.getAProduct);
