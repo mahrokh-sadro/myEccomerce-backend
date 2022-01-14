@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const bcrypt = require("bcrypt");
 const customerModel = require("../models/CustomerModel.js");
+// const { comparePassword  = require("../models/CustomerModel.js");
 
 var expressValidator = require("express-validator");
 
@@ -48,18 +49,23 @@ exports.signin = (req, res) => {
       return res.status(400).json({
         error: "User with that email does not exist. Please signup",
       });
-    } else if (user) {
-      bcrypt.compare(user.password, password).then((isMatched) => {
-        if (!isMatched)
+    } else {
+      bcrypt.compare(password, user.password).then((isMatched) => {
+        if (!isMatched) {
           return res.status(401).json({
             error: "Email and password dont match",
           });
+        } else {
+          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRETE);
+          res.cookie("token", token, { expire: new Date() + 9999 });
+          const { _id, firstName, lastName, email, role } = user;
+          return res.json({
+            token,
+            user: { _id, firstName, lastName, email, role },
+          });
+        }
       });
     }
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRETE);
-    res.cookie("token", token, { expire: new Date() + 9999 });
-    const { _id, firstName, lastName, email, role } = user;
-    return res.json({ token, user: { _id, firstName, lastName, email, role } });
   });
 };
 
