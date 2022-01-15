@@ -56,12 +56,34 @@ exports.getAllProducts = (req, res) => {
   }
   //http://localhost:3000/products
   //when we wanna get all movies
-  else {
+  else if (req.query.order || req.query.sortBy || req.query.limit) {
+    let order = req.query.order ? req.query.order : "desc";
+    let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+    let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
     productModel
       .find() //in mongoose find means all documents
+      .sort([[sortBy, order]])
+      // .limit(limit)
+      .then((products) => {
+        res.json({
+          message: "Get all products sorted",
+          data: products,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({
+          message: `Error------>   ${err}`,
+        });
+      });
+  } else {
+    productModel
+      .find()
+      // .limit(limit)
       .then((products) => {
         res.json({
           message: "Get all products",
+          count: products.length,
           data: products,
         });
       })
@@ -97,7 +119,8 @@ exports.getAProduct = (req, res) => {
 };
 
 exports.createAProduct = (req, res) => {
-  if (!req.body.name || !req.body.price || !req.body.category) {
+  const { name, price, category } = req.body;
+  if (!name || !price || !category) {
     res.status(400).json({
       message: `bad request`,
     });
@@ -168,7 +191,6 @@ exports.deleteAProduct = (req, res) => {
     });
 };
 
-///buggggyyy
 exports.getAllCategories = (req, res) => {
   productModel
     .find()
@@ -224,6 +246,51 @@ exports.getRelatedProducts = (req, res) => {
     .catch((err) => {
       res.status(500).json({
         error: err,
+      });
+    });
+};
+
+exports.listBySearch = (req, res) => {
+  let order = req.body.order ? req.body.order : "desc";
+  let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+  let skip = parseInt(req.body.skip);
+  let findArgs = {};
+
+  // console.log(order, sortBy, limit, skip, req.body.filters);
+  // console.log("findArgs", findArgs);
+
+  for (let key in req.body.filters) {
+    if (req.body.filters[key].length > 0) {
+      if (key === "price") {
+        // gte -  greater than price [0-10]
+        // lte - less than
+        findArgs[key] = {
+          $gte: req.body.filters[key][0],
+          $lte: req.body.filters[key][1],
+        };
+      } else {
+        findArgs[key] = req.body.filters[key];
+      }
+    }
+  }
+
+  productModel
+    .find(findArgs)
+    // .select('-photo')
+    // .populate('category')
+    .sort([[sortBy, order]])
+    // .skip(skip) //??
+    .limit(limit)
+    .exec((err, data) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Products not found",
+        });
+      }
+      res.json({
+        size: data.length,
+        data,
       });
     });
 };

@@ -28,4 +28,8 @@ router.post(
 router.post("/signin", signin);
 router.get("/signout", signout);
 
+// router.get("/hello", requireSignin, (req, res) => {
+//   res.send("hello world");
+// });
+
 module.exports = router;

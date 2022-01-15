@@ -59,6 +59,7 @@ exports.signin = (req, res) => {
           const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRETE);
           res.cookie("token", token, { expire: new Date() + 9999 });
           const { _id, firstName, lastName, email, role } = user;
+          // console.log("req.profile:" + req.profile);
           return res.json({
             token,
             user: { _id, firstName, lastName, email, role },
@@ -101,5 +102,3 @@ exports.requireSignin = expressJwt({
   algorithms: ["HS256"], // added later
   userProperty: "auth",
 });
-
-//signin

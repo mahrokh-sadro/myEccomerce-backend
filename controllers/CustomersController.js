@@ -7,22 +7,27 @@ const {
 } = require("../services/AuthService.js");
 
 const {
-  //   userById,
+  userById,
   read,
   //   update,
   //   purchaseHistory,
 } = require("../services/CustomerService.js");
 
-router.get("/secret/:id", requireSignin, isAuth, isAdmin, (req, res) => {
+router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   res.json({
     user: req.profile,
   });
 });
 
-router.get("/customers/:userId", requireSignin, isAuth, read);
+router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
+  res.json({
+    user: req.profile,
+  });
+});
+
 // router.put("/customers/:userId", requireSignin, isAuth, update);
 // router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
 
-// router.param("userId", userById);
+router.param("userId", userById);
 
 module.exports = router;

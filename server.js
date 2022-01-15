@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", AuthController);
 app.use("/products", productsController);
-// app.use("/", customersController);
+app.use("/", customersController);
 // app.use("/customers", superMahrokhController);
 // app.use("/customers", orderController);
 
