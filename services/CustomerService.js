@@ -42,21 +42,20 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  const { firstName, lastName, password } = req.body;
+  // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
+  const { lastName, password } = req.body;
 
   customerModel.findOne({ _id: req.profile._id }, (err, user) => {
     if (err || !user) {
-      res.status(400).json({
+      return res.status(400).json({
         error: "User not found",
       });
     }
-
-    if (!firstName || !lastName) {
-      res.status(400).json({
-        error: "first name and last name are required",
+    if (!lastName) {
+      return res.status(400).json({
+        error: "Last Name is required",
       });
     } else {
-      user.firstName = firstName;
       user.lastName = lastName;
     }
 
@@ -68,16 +67,18 @@ exports.update = (req, res) => {
       } else {
         user.password = password;
       }
-
-      user.save((err, updatedUser) => {
-        if (err) {
-          res.status(400).json({
-            error: "User update failed",
-          });
-        }
-        updatedUser.password = undefined;
-        res.json(updatedUser);
-      });
     }
+
+    user.save((err, updatedUser) => {
+      if (err) {
+        console.log("USER UPDATE ERROR", err);
+        return res.status(400).json({
+          error: "User update failed",
+        });
+      }
+      updatedUser.password = undefined;
+      // updatedUser.salt = undefined;
+      res.json(updatedUser);
+    });
   });
 };

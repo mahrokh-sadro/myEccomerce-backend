@@ -1,4 +1,5 @@
 const express = require("express");
+
 const router = express.Router();
 const {
   requireSignin,
@@ -9,15 +10,11 @@ const {
 const {
   userById,
   read,
-  //   update,
+  update,
   //   purchaseHistory,
 } = require("../services/CustomerService.js");
 
-router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
-  res.json({
-    user: req.profile,
-  });
-});
+//
 
 router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   res.json({
@@ -25,7 +22,8 @@ router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   });
 });
 
-// router.put("/customers/:userId", requireSignin, isAuth, update);
+router.get("/customers/:userId", requireSignin, isAuth, read);
+router.put("/customers/:userId", requireSignin, isAuth, update);
 // router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
 
 router.param("userId", userById);

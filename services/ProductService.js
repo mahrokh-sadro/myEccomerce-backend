@@ -250,7 +250,7 @@ exports.getRelatedProducts = (req, res) => {
     });
 };
 
-exports.listBySearch = (req, res) => {
+exports.getProductsBySearch = (req, res) => {
   let order = req.body.order ? req.body.order : "desc";
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
   let limit = req.body.limit ? parseInt(req.body.limit) : 100;
@@ -277,8 +277,7 @@ exports.listBySearch = (req, res) => {
 
   productModel
     .find(findArgs)
-    // .select('-photo')
-    // .populate('category')
+
     .sort([[sortBy, order]])
     // .skip(skip) //??
     .limit(limit)

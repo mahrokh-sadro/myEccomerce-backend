@@ -56,7 +56,10 @@ exports.signin = (req, res) => {
             error: "Email and password dont match",
           });
         } else {
-          const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRETE);
+          const token = jwt.sign(
+            { _id: user._id, role: user.role },
+            "aveiheislkcmalxjoqieqAPOi3tu45thhijsjsvfdnvlfdvowdpwip2"
+          );
           res.cookie("token", token, { expire: new Date() + 9999 });
           const { _id, firstName, lastName, email, role } = user;
           // console.log("req.profile:" + req.profile);
@@ -88,6 +91,8 @@ exports.isAdmin = (req, res, next) => {
 
 exports.isAuth = (req, res, next) => {
   let user = req.profile && req.auth && req.profile._id == req.auth._id;
+  console.log(req.profile._id);
+  console.log(req.auth._id);
 
   if (!user) {
     return res.status(403).json({

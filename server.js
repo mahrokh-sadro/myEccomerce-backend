@@ -36,8 +36,8 @@ const corsOptionsDelegate = function (req, callback) {
 //middleware
 app.use(morgan("dev"));
 app.use(cors(corsOptionsDelegate));
-// app.use(bodyParser.json());
-app.use(express.json());
+app.use(bodyParser.json());
+// app.use(express.json());
 app.use(cookieParser());
 // app.use(expressValidator());
 
