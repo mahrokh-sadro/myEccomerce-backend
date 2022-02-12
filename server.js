@@ -13,6 +13,7 @@ const customersController = require("./controllers/CustomersController.js");
 const productsController = require("./controllers/ProductsController.js");
 const AuthController = require("./controllers/AuthController.js");
 const BraintreeController = require("./controllers/BraintreeController.js");
+const OrderController = require("./controllers/OrderController.js");
 
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config({ path: "config/keys.env" });
@@ -53,6 +54,7 @@ app.use("/auth", AuthController);
 app.use("/products", productsController);
 app.use("/", customersController);
 app.use("/braintree", BraintreeController);
+app.use("/order", OrderController);
 // app.use("/customers", superMahrokhController);
 // app.use("/customers", orderController);
 

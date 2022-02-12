@@ -20,6 +20,7 @@
     "boxen": "^5.1.2",
     "brace-expansion": "^1.1.11",
     "braces": "^3.0.2",
+    "braintree": "^3.8.0",
     "bson": "^4.5.2",
     "buffer": "^5.7.1",
     "bytes": "^3.1.0",

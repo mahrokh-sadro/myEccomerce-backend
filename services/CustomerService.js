@@ -1,4 +1,6 @@
-const customerModel = require("../models/CustomerModel.js");
+const CustomerModel = require("../models/CustomerModel.js");
+const OrderModel = require("../models/OrderModel");
+const { errorHandler } = require("../helpers/dbErrorHandler");
 const bcrypt = require("bcrypt");
 
 // exports.getACustomer = (req, res) => {
@@ -25,7 +27,7 @@ const bcrypt = require("bcrypt");
 // };
 
 exports.userById = (req, res, next, id) => {
-  customerModel.findById(id).exec((err, user) => {
+  CustomerModel.findById(id).exec((err, user) => {
     if (err || !user) {
       res.status(400).json({
         err: `user not found`,
@@ -45,7 +47,7 @@ exports.update = (req, res) => {
   // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
   const { lastName, password } = req.body;
 
-  customerModel.findOne({ _id: req.profile._id }, (err, user) => {
+  CustomerModel.findOne({ _id: req.profile._id }, (err, user) => {
     if (err || !user) {
       return res.status(400).json({
         error: "User not found",
@@ -81,4 +83,18 @@ exports.update = (req, res) => {
       res.json(updatedUser);
     });
   });
+};
+
+exports.purchaseHistory = (req, res) => {
+  OrderModel.find({ user: req.profile.id })
+    .populate("user", "id firstName")
+    .sort("-created")
+    .exec((err, orders) => {
+      if (err) {
+        return res.status(400).json({
+          err: errorHandler(err),
+        });
+      }
+      res.json({ orders: orders });
+    });
 };
