@@ -11,7 +11,7 @@ const {
   userById,
   read,
   update,
-  //   purchaseHistory,
+  purchaseHistory,
 } = require("../services/CustomerService.js");
 
 //
@@ -24,7 +24,7 @@ router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
 
 router.get("/customers/:userId", requireSignin, isAuth, read);
 router.put("/customers/:userId", requireSignin, isAuth, update);
-// router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
+router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
 
 router.param("userId", userById);
 

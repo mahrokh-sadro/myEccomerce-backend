@@ -1,6 +1,6 @@
 const CustomerModel = require("../models/CustomerModel.js");
-const OrderModel = require("../models/OrderModel");
-const { errorHandler } = require("../helpers/dbErrorHandler");
+const OrderModel = require("../models/OrderModel.js");
+const { errorHandler } = require("../helpers/dbErrorHandler.js");
 const bcrypt = require("bcrypt");
 
 // exports.getACustomer = (req, res) => {
@@ -86,9 +86,9 @@ exports.update = (req, res) => {
 };
 
 exports.purchaseHistory = (req, res) => {
-  OrderModel.find({ user: req.profile.id })
-    .populate("user", "id firstName")
-    .sort("-created")
+  OrderModel.Order.find({ user: req.profile.id })
+    .populate("user", "_id firstName")
+    // .sort("-created")
     .exec((err, orders) => {
       if (err) {
         return res.status(400).json({
