@@ -26,6 +26,8 @@ const corsOptionsDelegate = function (req, callback) {
     "http://127.0.0.1:3000",
     "https://eemart.netlify.app/",
     "http://eemart.netlify.app/",
+    "https://eemart.netlify.app",
+    "http://eemart.netlify.app",
   ];
   let corsOptions;
   if (allowlist.indexOf(req.header("Origin")) !== -1) {
