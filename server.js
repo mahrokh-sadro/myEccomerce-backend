@@ -24,8 +24,6 @@ const corsOptionsDelegate = function (req, callback) {
   const allowlist = [
     `http://localhost:3000`,
     "http://127.0.0.1:3000",
-    "https://eemart.netlify.app/",
-    "http://eemart.netlify.app/",
     "https://eemart.netlify.app",
     "http://eemart.netlify.app",
   ];
