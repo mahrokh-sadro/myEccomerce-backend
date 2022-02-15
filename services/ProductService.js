@@ -4,7 +4,6 @@ exports.getAllProducts = (req, res) => {
   //if /products + query string
   //if we wonna get some movies
   if (req.query.isBestSeller) {
-    //   productModel.find({ isBestSeller: true })//just wanna get the documents where this condition
     productModel
       .find()
       .where("isBestSeller")
@@ -21,7 +20,6 @@ exports.getAllProducts = (req, res) => {
         });
       });
   } else if (req.query.isFeatured) {
-    //   productModel.find({ isBestSeller: true })//just wanna get the documents where this condition
     productModel
       .find()
       .where("isFeatured")
@@ -62,7 +60,7 @@ exports.getAllProducts = (req, res) => {
     let limit = req.query.limit ? parseInt(req.query.limit) : 6;
 
     productModel
-      .find() //in mongoose find means all documents
+      .find()
       .sort([[sortBy, order]])
       // .limit(limit)
       .then((products) => {
@@ -79,7 +77,6 @@ exports.getAllProducts = (req, res) => {
   } else {
     productModel
       .find()
-      // .limit(limit)
       .then((products) => {
         res.json({
           message: "Get all products",
@@ -126,20 +123,17 @@ exports.createAProduct = (req, res) => {
     });
   }
 
-  const newProduct = new productModel(req.body); //the data that client pass
+  const newProduct = new productModel(req.body);
 
   newProduct
     .save()
     .then((product) => {
-      //if the document saved successfully,well return the json format of the inserted document
-
       res.json({
         message: "create a product",
         data: product,
       });
     })
-    //if it fails we return json too
-    //cuz its a server err we return status code of 500
+
     .catch((err) => {
       res.status(500).json({
         message: `Error ${err}`,
@@ -172,7 +166,6 @@ exports.updateAProduct = (req, res) => {
 exports.deleteAProduct = (req, res) => {
   productModel
     .findByIdAndRemove(req.params.id)
-    //no second param so doesnt reurn anything so no arg for then()
     .then((product) => {
       if (product) {
         res.json({
@@ -257,14 +250,9 @@ exports.getProductsBySearch = (req, res) => {
   let skip = parseInt(req.body.skip);
   let findArgs = {};
 
-  // console.log(order, sortBy, limit, skip, req.body.filters);
-  // console.log("findArgs", findArgs);
-
   for (let key in req.body.filters) {
     if (req.body.filters[key].length > 0) {
       if (key === "price") {
-        // gte -  greater than price [0-10]
-        // lte - less than
         findArgs[key] = {
           $gte: req.body.filters[key][0],
           $lte: req.body.filters[key][1],
@@ -279,7 +267,6 @@ exports.getProductsBySearch = (req, res) => {
     .find(findArgs)
 
     .sort([[sortBy, order]])
-    // .skip(skip) //??
     .limit(limit)
     .exec((err, data) => {
       if (err) {

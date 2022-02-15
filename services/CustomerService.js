@@ -3,29 +3,6 @@ const OrderModel = require("../models/OrderModel.js");
 const { errorHandler } = require("../helpers/dbErrorHandler.js");
 const bcrypt = require("bcrypt");
 
-// exports.getACustomer = (req, res) => {
-//   customerModel
-//     .findById(req.params.id)
-//     .then((customer) => {
-//       if (customer) {
-//         res.json({
-//           message: `customer with the id ${req.params.id}`,
-//           data: customer,
-//         });
-//       } else {
-//         res.status(404).json({
-//           message: `There is no customer with the id ${req.params.id}`,
-//         });
-//       }
-//     })
-
-//     .catch((err) => {
-//       res.status(500).json({
-//         message: `There is no customer with the id ${req.params.id}`,
-//       });
-//     });
-// };
-
 exports.userById = (req, res, next, id) => {
   CustomerModel.findById(id).exec((err, user) => {
     if (err || !user) {
@@ -44,7 +21,6 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
   const { lastName, password } = req.body;
 
   CustomerModel.findOne({ _id: req.profile._id }, (err, user) => {
@@ -79,7 +55,6 @@ exports.update = (req, res) => {
         });
       }
       updatedUser.password = undefined;
-      // updatedUser.salt = undefined;
       res.json(updatedUser);
     });
   });
@@ -88,7 +63,6 @@ exports.update = (req, res) => {
 exports.purchaseHistory = (req, res) => {
   OrderModel.Order.find({ user: req.profile.id })
     .populate("user", "_id firstName")
-    // .sort("-created")
     .exec((err, orders) => {
       if (err) {
         return res.status(400).json({

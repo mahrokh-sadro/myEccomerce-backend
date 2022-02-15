@@ -12,8 +12,6 @@ exports.signup = (req, res) => {
   if (!firstName || !lastName || !email || !password) {
     res.status(400).json({
       message: `bad request`,
-      ///addd more info
-      //first      one is missing more info
     });
   }
 
@@ -62,7 +60,7 @@ exports.signin = (req, res) => {
           );
           res.cookie("token", token, { expire: new Date() + 9999 });
           const { _id, firstName, lastName, email, role } = user;
-          // console.log("req.profile:" + req.profile);
+
           return res.json({
             token,
             user: { _id, firstName, lastName, email, role },
@@ -104,6 +102,6 @@ exports.isAuth = (req, res, next) => {
 
 exports.requireSignin = expressJwt({
   secret: "aveiheislkcmalxjoqieqAPOi3tu45thhijsjsvfdnvlfdvowdpwip2",
-  algorithms: ["HS256"], // added later
+  algorithms: ["HS256"],
   userProperty: "auth",
 });

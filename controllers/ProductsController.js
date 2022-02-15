@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
-//imp
 const productService = require("../services/ProductService.js");
 
 router.get("/related/:id", productService.getRelatedProducts);

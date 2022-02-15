@@ -1,5 +1,3 @@
-//This is my entry point file!
-//import express
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -56,10 +54,7 @@ app.use("/products", productsController);
 app.use("/", customersController);
 app.use("/braintree", BraintreeController);
 app.use("/order", OrderController);
-// app.use("/customers", superMahrokhController);
 // app.use("/customers", orderController);
-
-//for routes that doesnt exist
 
 app.use("*", (req, res) => {
   res.status(404).json({
@@ -81,5 +76,3 @@ app.listen(HTTP_PORT, () => {
       console.log(err);
     });
 });
-
-//handle a route that doesnt exist

@@ -2,7 +2,6 @@ const { Order, CartItem } = require("../models/OrderModel");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 
 exports.create = (req, res) => {
-  //   console.log("create", req.body);
   req.body.order.user = req.body;
   const order = new Order(req.body.order);
 
