@@ -1,7 +1,7 @@
 const CustomerModel = require("../models/CustomerModel.js");
 const OrderModel = require("../models/OrderModel.js");
 const { errorHandler } = require("../helpers/dbErrorHandler.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 exports.userById = (req, res, next, id) => {
   CustomerModel.findById(id).exec((err, user) => {

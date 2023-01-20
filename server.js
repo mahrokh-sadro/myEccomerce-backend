@@ -13,6 +13,10 @@ const AuthController = require("./controllers/AuthController.js");
 const BraintreeController = require("./controllers/BraintreeController.js");
 const OrderController = require("./controllers/OrderController.js");
 
+const MONGO_DB_CONNECTION_STRING = `mongodb+srv://661370:661370@cluster0.8i4ns.mongodb.net/ShopCartDB?retryWrites=true&w=majority`;
+
+const PORT = 5000;
+
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config({ path: "config/keys.env" });
 }
@@ -68,7 +72,7 @@ app.listen(HTTP_PORT, () => {
   console.log(`app listening on `);
 
   mongoose
-    .connect(process.env.MONGO_DB_CONNECTION_STRING)
+    .connect(MONGO_DB_CONNECTION_STRING)
     .then(() => {
       console.log("connected to db " + HTTP_PORT);
     })

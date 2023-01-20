@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const customerModel = require("../models/CustomerModel.js");
 // const { comparePassword  = require("../models/CustomerModel.js");
 
