@@ -5,17 +5,10 @@ const morgan = require("morgan");
 
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-// const expressValidator = require("express-validator");
 
 const customersController = require("./controllers/CustomersController.js");
 const productsController = require("./controllers/ProductsController.js");
 const AuthController = require("./controllers/AuthController.js");
-const BraintreeController = require("./controllers/BraintreeController.js");
-const OrderController = require("./controllers/OrderController.js");
-
-const MONGO_DB_CONNECTION_STRING = `mongodb+srv://661370:661370@cluster0.8i4ns.mongodb.net/ShopCartDB?retryWrites=true&w=majority`;
-
-const PORT = 5000;
 
 if (process.env.NODE_ENV != "production") {
   require("dotenv").config({ path: "config/keys.env" });
@@ -42,9 +35,7 @@ const corsOptionsDelegate = function (req, callback) {
 app.use(morgan("dev"));
 app.use(cors(corsOptionsDelegate));
 app.use(bodyParser.json());
-// app.use(express.json());
 app.use(cookieParser());
-// app.use(expressValidator());
 
 //retirieve
 app.get("/", (req, res) => {
@@ -56,9 +47,6 @@ app.get("/", (req, res) => {
 app.use("/auth", AuthController);
 app.use("/products", productsController);
 app.use("/", customersController);
-app.use("/braintree", BraintreeController);
-app.use("/order", OrderController);
-// app.use("/customers", orderController);
 
 app.use("*", (req, res) => {
   res.status(404).json({
@@ -67,6 +55,7 @@ app.use("*", (req, res) => {
 });
 
 const HTTP_PORT = process.env.PORT || 5000;
+const MONGO_DB_CONNECTION_STRING = `mongodb+srv://661370:661370@cluster0.8i4ns.mongodb.net/ShopCartDB?retryWrites=true&w=majority`;
 
 app.listen(HTTP_PORT, () => {
   console.log(`app listening on `);

@@ -1,11 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const {
-  requireSignin,
-  isAuth,
-  isAdmin,
-} = require("../services/AuthService.js");
+const { isAuth, isAdmin } = require("../services/AuthService.js");
 
 const {
   userById,
@@ -16,15 +12,14 @@ const {
 
 //
 
-router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
+router.get("/secret/:userId", isAuth, isAdmin, (req, res) => {
   res.json({
     user: req.profile,
   });
 });
 
-router.get("/customers/:userId", requireSignin, isAuth, read);
-router.put("/customers/:userId", requireSignin, isAuth, update);
-router.get("/orders/by/user/:userId", requireSignin, isAuth, purchaseHistory);
+router.get("/customers/:userId", isAuth, read);
+router.put("/customers/:userId", isAuth, update);
 
 router.param("userId", userById);
 
