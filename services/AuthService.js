@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-// const expressJwt = require("express-jwt");
 const bcrypt = require("bcryptjs");
 const customerModel = require("../models/CustomerModel.js");
 

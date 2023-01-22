@@ -2,7 +2,7 @@ const productModel = require("../models/ProductModel.js");
 
 exports.getAllProducts = (req, res) => {
   //if /products + query string
-  //if we wonna get some movies
+  //if we wonna get some
   if (req.query.isBestSeller) {
     productModel
       .find()
@@ -53,7 +53,7 @@ exports.getAllProducts = (req, res) => {
       });
   }
   //http://localhost:3000/products
-  //when we wanna get all movies
+  //when we wanna get all
   else if (req.query.order || req.query.sortBy || req.query.limit) {
     let order = req.query.order ? req.query.order : "desc";
     let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
